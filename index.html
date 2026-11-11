@@ -138,11 +138,15 @@ function speak(txt){
     speechSynthesis.speak(u);
   });
 }
+function unlockSpeech(){
+  try{if(window.speechSynthesis){const w=new SpeechSynthesisUtterance(' ');w.volume=0;speechSynthesis.speak(w)}}catch(e){}
+}
 async function handle(q){
   q=q.trim(); if(!q) return;
-  try{if(voiceOut&&window.speechSynthesis){const w=new SpeechSynthesisUtterance(' ');w.volume=0;speechSynthesis.speak(w)}}catch(e){}
+  unlockSpeech();
   add(q,'u'); $('t').value='';
-  const a=await think(q); add(a,'z'); speak(a);
+  const a=await think(q); add(a,'z');
+  setTimeout(()=>speak(a),300);
 }
 $('send').onclick=()=>handle($('t').value);
 $('t').onkeydown=e=>{if(e.key==='Enter')handle($('t').value)};
@@ -151,16 +155,23 @@ $('mute').onclick=()=>{voiceOut=!voiceOut;$('mute').classList.toggle('off',!voic
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
 let rec,listening=false;
 if(SR){
-  rec=new SR();rec.lang='en-IN';rec.interimResults=false;
+  rec=new SR();rec.lang='en-IN';rec.interimResults=false;rec.continuous=false;rec.maxAlternatives=1;
   rec.onstart=()=>{listening=true;$('mic').classList.add('on');document.body.classList.add('listening')};
   rec.onend=()=>{listening=false;$('mic').classList.remove('on');document.body.classList.remove('listening')};
   rec.onresult=e=>handle(e.results[0][0].transcript);
-  rec.onerror=e=>add('Mic error: '+e.error+'. Check Settings > Safari > Microphone, and that Dictation is on.','z');
+  rec.onerror=e=>{
+    if(e.error==='aborted') return;
+    if(e.error==='no-speech') return add('I did not catch that. Tap the mic and try again.','z');
+    if(e.error==='not-allowed'||e.error==='service-not-allowed') return add('Mic is blocked. Allow the microphone for this site in Safari, and turn on Dictation in Settings > General > Keyboard.','z');
+    add('Mic error: '+e.error,'z');
+  };
 }
 $('mic').onclick=()=>{
   if(!rec) return add('Voice input is not supported here. Typing still works.','z');
+  if(listening){try{rec.stop()}catch(e){}return}
   speechSynthesis.cancel();
-  listening?rec.stop():rec.start();
+  unlockSpeech();
+  try{rec.start()}catch(e){}
 };
 $('gear').onclick=()=>{$('cin').value=store.get('zc');$('kp').classList.toggle('show')};
 $('ksave').onclick=()=>{
