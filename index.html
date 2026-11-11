@@ -75,6 +75,14 @@ async function getNews(){
   return items.length?'LIVE TOP NEWS HEADLINES: '+items.join(' | '):'News is unavailable right now.';
 }
 
+let model='';
+async function pickModel(key){
+  const r=await fetch('https://api.groq.com/openai/v1/models',{headers:{'Authorization':'Bearer '+key}});
+  const j=await r.json();
+  const ids=(j.data||[]).map(m=>m.id).filter(id=>!/whisper|guard|tts|playai|orpheus|distil|safeguard/i.test(id));
+  const prefs=['llama-3.3-70b-versatile','openai/gpt-oss-120b','openai/gpt-oss-20b','llama-3.1-8b-instant'];
+  return prefs.find(p=>ids.includes(p))||ids[0]||'';
+}
 async function think(q){
   const key=store.get('zk');
   if(!key) return 'I need my brain key first. Tap the gear at the top and paste your Groq key.';
@@ -87,16 +95,21 @@ async function think(q){
   hist.push({role:'user',content:q}); hist=hist.slice(-12);
   const sys=`You are ZARVIS, a warm, friendly companion having a real spoken conversation, like a close friend on a call. Talk the way people actually talk: casual, contractions, short sentences, natural reactions like oh nice, hmm, or ha true. Usually 1-2 short sentences, never more than 3. Never list things, never use markdown, emojis or stage directions. React to what they said first, and often end with a short natural question back. Mirror the language and mood of the person. Current time: ${new Date().toString()}.`+(live?`\nLive data you can use for this answer (summarise it casually, do not read it out like a report): ${live}`:'');
   try{
+    if(!model) model=await pickModel(key);
+    if(!model) return 'I could not find a chat model on your Groq account. Check that your key is valid.';
+    const body={model:model,temperature:.7,max_tokens:250,messages:[{role:'system',content:sys},...hist]};
+    if(/gpt-oss/.test(model)){body.reasoning_effort='low';body.max_tokens=700}
     const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
-      body:JSON.stringify({model:'llama-3.3-70b-versatile',temperature:.7,max_tokens:250,messages:[{role:'system',content:sys},...hist]})});
+      body:JSON.stringify(body)});
     const j=await r.json();
     if(!r.ok){
       if(r.status===401) return 'My key was rejected. Tap the gear and paste a fresh Groq key.';
       if(r.status===429) return 'Too many requests. Give me a few seconds.';
-      return 'Brain error '+r.status+': '+((j.error&&j.error.message)||'unknown');
+      if(r.status===404||r.status===400){model='';}
+      return 'Brain error '+r.status+' with model '+body.model+': '+((j.error&&j.error.message)||'unknown')+' Try again and I will pick another model.';
     }
-    const a=j.choices[0].message.content.trim();
+    const a=((j.choices[0].message.content)||'').trim()||'Hmm, I blanked for a second. Say that again?';
     hist.push({role:'assistant',content:a}); return a;
   }catch(e){return 'Connection problem: '+e.message}
 }
@@ -155,6 +168,7 @@ $('ksave').onclick=()=>{
   let ok=true;
   if(k) ok=store.set('zk',k)&&ok;
   if(c) ok=store.set('zc',c)&&ok;
+  model='';
   $('kin').value='';$('kp').classList.remove('show');
   add(ok?'Saved. I am ready.':'Could not save in this browser.','z');
 };
