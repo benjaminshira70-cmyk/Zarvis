@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ZARVIS">
+<meta name="theme-color" content="#02060d">
+<title>ZARVIS</title>
+<style>
+:root{--c:#00e5ff;--c2:#7c4dff;--bg:#02060d;--dim:#0a1a2a}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--c);font-family:ui-monospace,Menlo,monospace;overflow:hidden}
+body{display:flex;flex-direction:column;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);background:radial-gradient(circle at 50% 22%,#06233a 0,var(--bg) 60%)}
+header{display:flex;justify-content:space-between;padding:10px 16px;font-size:11px;letter-spacing:.2em;opacity:.8}
+#orbwrap{height:170px;display:flex;align-items:center;justify-content:center;position:relative;flex:none}
+.ring{position:absolute;border-radius:50%;border:1px solid var(--c);box-shadow:0 0 14px var(--c),inset 0 0 14px #00e5ff44}
+.r1{width:140px;height:140px;border-style:dashed;animation:spin 18s linear infinite}
+.r2{width:104px;height:104px;border-color:var(--c2);box-shadow:0 0 14px var(--c2);animation:spin 9s linear infinite reverse}
+.core{width:60px;height:60px;border-radius:50%;background:radial-gradient(circle,#fff 0,var(--c) 35%,transparent 72%);animation:pulse 3s ease-in-out infinite}
+body.listening .core{animation-duration:.6s;background:radial-gradient(circle,#fff 0,#ff4081 35%,transparent 72%)}
+body.speaking .core{animation-duration:.9s;background:radial-gradient(circle,#fff 0,var(--c2) 35%,transparent 72%)}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{50%{transform:scale(1.25);opacity:.7}}
+#log{flex:1;overflow-y:auto;padding:8px 16px;display:flex;flex-direction:column;gap:10px}
+.m{max-width:86%;padding:10px 12px;font-size:14px;line-height:1.4;border:1px solid #00e5ff55;background:#00e5ff0d;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px))}
+.m.u{align-self:flex-end;border-color:#7c4dff88;background:#7c4dff14;color:#d1c4ff}
+.m.z:before{content:"ZARVIS \25B8 ";opacity:.6;font-size:10px;letter-spacing:.15em}
+#bar{display:flex;gap:8px;padding:10px 12px 12px;border-top:1px solid #00e5ff33;background:#02060dcc}
+#t{flex:1;min-width:0;background:var(--dim);border:1px solid #00e5ff66;color:#e0faff;padding:12px;font:16px ui-monospace,Menlo,monospace;border-radius:4px;outline:none}
+button{background:var(--dim);border:1px solid var(--c);color:var(--c);width:48px;font-size:20px;border-radius:4px;box-shadow:0 0 8px #00e5ff55}
+button:active{background:#00e5ff33}
+#mic.on{border-color:#ff4081;color:#ff4081;box-shadow:0 0 12px #ff4081}
+#mute.off{opacity:.4}
+#kp{display:none;flex-direction:column;gap:8px;padding:0 12px 8px}
+#kp.show{display:flex}
+#kp input{background:var(--dim);border:1px solid #7c4dff;color:#e0faff;padding:10px;font:16px ui-monospace,Menlo,monospace;border-radius:4px;outline:none;width:100%}
+#ksave{width:100%;height:42px;font-size:15px}
+</style></head>
+<body>
+<header><span>ZARVIS // LIVE</span><span><span id="clock"></span> <span id="gear" style="cursor:pointer;font-size:18px;margin-left:8px">&#9881;</span></span></header>
+<div id="kp">
+<input id="kin" type="password" placeholder="Groq key (gsk_...)" autocomplete="off">
+<input id="cin" type="text" placeholder="Your city for weather (e.g. Mumbai)" autocomplete="off">
+<button id="ksave">Save</button>
+</div>
+<div id="orbwrap"><div class="ring r1"></div><div class="ring r2"></div><div class="core"></div></div>
+<div id="log"></div>
+<div id="bar">
+<button id="mic" aria-label="Voice">&#127908;</button>
+<input id="t" placeholder="Speak or type..." autocomplete="off" enterkeyhint="send">
+<button id="send" aria-label="Send">&#10148;</button>
+<button id="mute" aria-label="Voice replies">&#128266;</button>
+</div>
+<script>
+const $=id=>document.getElementById(id), log=$('log');
+let voiceOut=true, hist=[];
+const store={
+  get:k=>{try{return localStorage.getItem(k)||''}catch(e){return ''}},
+  set:(k,v)=>{try{localStorage.setItem(k,v);return true}catch(e){return false}}
+};
+
+async function getWeather(){
+  const city=store.get('zc')||'Delhi';
+  const g=await (await fetch('https://geocoding-api.open-meteo.com/v1/search?count=1&name='+encodeURIComponent(city))).json();
+  if(!g.results||!g.results.length) return 'Weather: could not find the city '+city+'.';
+  const p=g.results[0];
+  const w=await (await fetch('https://api.open-meteo.com/v1/forecast?latitude='+p.latitude+'&longitude='+p.longitude+'&current=temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto&forecast_days=1')).json();
+  const c=w.current, d=w.daily;
+  return 'LIVE WEATHER for '+p.name+': now '+c.temperature_2m+'C (feels like '+c.apparent_temperature+'C), humidity '+c.relative_humidity_2m+'%, wind '+c.wind_speed_10m+' km/h, WMO weather code '+c.weather_code+', today high '+d.temperature_2m_max[0]+'C, low '+d.temperature_2m_min[0]+'C, rain chance '+d.precipitation_probability_max[0]+'%.';
+}
+async function getNews(){
+  const feed='https://news.google.com/rss?hl=en-IN&gl=IN&ceid=IN:en';
+  const r=await (await fetch('https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(feed))).json();
+  const items=(r.items||[]).slice(0,6).map(i=>i.title);
+  return items.length?'LIVE TOP NEWS HEADLINES: '+items.join(' | '):'News is unavailable right now.';
+}
+
+async function think(q){
+  const key=store.get('zk');
+  if(!key) return 'I need my brain key first. Tap the gear at the top and paste your Groq key.';
+  const s=q.toLowerCase();
+  let live='';
+  try{
+    if(/weather|temperature|rain|forecast|umbrella|how hot|how cold/.test(s)) live+=await getWeather()+'\n';
+    if(/news|headline|happening|going on in the world/.test(s)) live+=await getNews()+'\n';
+  }catch(e){live+='Live data fetch failed.\n'}
+  hist.push({role:'user',content:q}); hist=hist.slice(-12);
+  const sys=`You are ZARVIS, a warm, friendly companion having a real spoken conversation, like a close friend on a call. Talk the way people actually talk: casual, contractions, short sentences, natural reactions like oh nice, hmm, or ha true. Usually 1-2 short sentences, never more than 3. Never list things, never use markdown, emojis or stage directions. React to what they said first, and often end with a short natural question back. Mirror the language and mood of the person. Current time: ${new Date().toString()}.`+(live?`\nLive data you can use for this answer (summarise it casually, do not read it out like a report): ${live}`:'');
+  try{
+    const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
+      body:JSON.stringify({model:'llama-3.3-70b-versatile',temperature:.7,max_tokens:250,messages:[{role:'system',content:sys},...hist]})});
+    const j=await r.json();
+    if(!r.ok){
+      if(r.status===401) return 'My key was rejected. Tap the gear and paste a fresh Groq key.';
+      if(r.status===429) return 'Too many requests. Give me a few seconds.';
+      return 'Brain error '+r.status+': '+((j.error&&j.error.message)||'unknown');
+    }
+    const a=j.choices[0].message.content.trim();
+    hist.push({role:'assistant',content:a}); return a;
+  }catch(e){return 'Connection problem: '+e.message}
+}
+
+function add(txt,cls){const e=document.createElement('div');e.className='m '+cls;e.textContent=txt;log.appendChild(e);log.scrollTop=log.scrollHeight}
+function pickVoice(){
+  const v=speechSynthesis.getVoices().filter(x=>/^en/i.test(x.lang));
+  const sc=x=>(/^Ava/i.test(x.name)?20:0)+(/premium/i.test(x.name)?6:0)+(/enhanced/i.test(x.name)?5:0)+(/siri/i.test(x.name)?4:0)+(/^(Samantha|Daniel|Serena|Rishi|Karen|Oliver|Aaron)/i.test(x.name)?2:0)+(/en[-_](IN|GB|US)/i.test(x.lang)?1:0);
+  return v.sort((a,b)=>sc(b)-sc(a))[0]||null;
+}
+function speak(txt){
+  if(!voiceOut||!window.speechSynthesis) return;
+  speechSynthesis.cancel();
+  txt=txt.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}]/gu,'').replace(/\s+/g,' ').trim();
+  if(!txt) return;
+  const parts=txt.match(/[^.!?,;:\u2014]+[.!?,;:\u2014]*/g)||[txt];
+  const pv=pickVoice();
+  parts.forEach((p,i)=>{
+    p=p.trim(); if(!p) return;
+    const u=new SpeechSynthesisUtterance(p);
+    const q=/\?$/.test(p);
+    u.rate=q?1.02:.96; u.pitch=q?1.08:1;
+    if(pv) u.voice=pv;
+    if(i===0) u.onstart=()=>document.body.classList.add('speaking');
+    if(i===parts.length-1) u.onend=u.onerror=()=>document.body.classList.remove('speaking');
+    speechSynthesis.speak(u);
+  });
+}
+async function handle(q){
+  q=q.trim(); if(!q) return;
+  try{if(voiceOut&&window.speechSynthesis){const w=new SpeechSynthesisUtterance(' ');w.volume=0;speechSynthesis.speak(w)}}catch(e){}
+  add(q,'u'); $('t').value='';
+  const a=await think(q); add(a,'z'); speak(a);
+}
+$('send').onclick=()=>handle($('t').value);
+$('t').onkeydown=e=>{if(e.key==='Enter')handle($('t').value)};
+$('mute').onclick=()=>{voiceOut=!voiceOut;$('mute').classList.toggle('off',!voiceOut);if(!voiceOut)speechSynthesis.cancel()};
+
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+let rec,listening=false;
+if(SR){
+  rec=new SR();rec.lang='en-IN';rec.interimResults=false;
+  rec.onstart=()=>{listening=true;$('mic').classList.add('on');document.body.classList.add('listening')};
+  rec.onend=()=>{listening=false;$('mic').classList.remove('on');document.body.classList.remove('listening')};
+  rec.onresult=e=>handle(e.results[0][0].transcript);
+  rec.onerror=e=>add('Mic error: '+e.error+'. Check Settings > Safari > Microphone, and that Dictation is on.','z');
+}
+$('mic').onclick=()=>{
+  if(!rec) return add('Voice input is not supported here. Typing still works.','z');
+  speechSynthesis.cancel();
+  listening?rec.stop():rec.start();
+};
+$('gear').onclick=()=>{$('cin').value=store.get('zc');$('kp').classList.toggle('show')};
+$('ksave').onclick=()=>{
+  const k=$('kin').value.trim(), c=$('cin').value.trim();
+  let ok=true;
+  if(k) ok=store.set('zk',k)&&ok;
+  if(c) ok=store.set('zc',c)&&ok;
+  $('kin').value='';$('kp').classList.remove('show');
+  add(ok?'Saved. I am ready.':'Could not save in this browser.','z');
+};
+setInterval(()=>{$('clock').textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})},1000);
+add(store.get('zk')?'Systems online. Tap the mic or type.':'Systems online. Tap the gear to add your key and city.','z');
+</script>
+</body></html>
