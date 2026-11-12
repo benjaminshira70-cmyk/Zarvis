@@ -59,6 +59,28 @@ const store={
   set:(k,v)=>{try{localStorage.setItem(k,v);return true}catch(e){return false}}
 };
 
+try{hist=JSON.parse(store.get('zh')||'[]')}catch(e){hist=[]}
+let facts=[];
+try{facts=JSON.parse(store.get('zf')||'[]')}catch(e){facts=[]}
+function saveMem(){store.set('zh',JSON.stringify(hist.slice(-20)));store.set('zf',JSON.stringify(facts.slice(-40)))}
+async function learn(q,key){
+  if(q.length<8||!model) return;
+  try{
+    const body={model:model,temperature:0,max_tokens:150,messages:[
+      {role:'system',content:'Extract lasting personal facts about the user from their message (name, family, job, city, likes, dislikes, goals, routines, important dates). Reply with ONLY a JSON array of short third-person strings, for example ["The user is called Ben"]. If there is nothing worth remembering, reply []. Facts already known: '+JSON.stringify(facts)},
+      {role:'user',content:q}]};
+    if(/gpt-oss/.test(model)){body.reasoning_effort='low';body.max_tokens=500}
+    const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},body:JSON.stringify(body)});
+    if(!r.ok) return;
+    const j=await r.json();
+    const m=((j.choices[0].message.content)||'').match(/\[[\s\S]*\]/);
+    if(!m) return;
+    const arr=JSON.parse(m[0]);
+    arr.forEach(f=>{f=String(f).trim();if(f&&f.length<160&&!facts.some(x=>x.toLowerCase()===f.toLowerCase())) facts.push(f)});
+    saveMem();
+  }catch(e){}
+}
 async function getWeather(){
   const city=store.get('zc')||'Delhi';
   const g=await (await fetch('https://geocoding-api.open-meteo.com/v1/search?count=1&name='+encodeURIComponent(city))).json();
@@ -87,16 +109,17 @@ async function think(q){
   const key=store.get('zk');
   if(!key) return 'I need my brain key first. Tap the gear at the top and paste your Groq key.';
   const s=q.toLowerCase();
+  if(/forget (everything|all|my memory|me)|clear (your |my )?memory|wipe (your )?memory/.test(s)){facts=[];hist=[];saveMem();return 'Done. My memory is wiped clean. Hi, nice to meet you.'}
   let live='';
   try{
     if(/weather|temperature|rain|forecast|umbrella|how hot|how cold/.test(s)) live+=await getWeather()+'\n';
     if(/news|headline|happening|going on in the world/.test(s)) live+=await getNews()+'\n';
   }catch(e){live+='Live data fetch failed.\n'}
-  hist.push({role:'user',content:q}); hist=hist.slice(-12);
-  const sys=`You are ZARVIS, a warm, friendly companion having a real spoken conversation, like a close friend on a call. Talk the way people actually talk: casual, contractions, short sentences, natural reactions like oh nice, hmm, or ha true. Usually 1-2 short sentences, never more than 3. Never list things, never use markdown, emojis or stage directions. React to what they said first, and often end with a short natural question back. Mirror the language and mood of the person. Current time: ${new Date().toString()}.`+(live?`\nLive data you can use for this answer (summarise it casually, do not read it out like a report): ${live}`:'');
+  hist.push({role:'user',content:q}); hist=hist.slice(-20);
+  const sys=`You are ZARVIS, a warm, friendly companion having a real spoken conversation, like a close friend on a call. Talk the way people actually talk: casual, contractions, short sentences, natural reactions like oh nice, hmm, or ha true. Usually 1-2 short sentences, never more than 3. Never list things, never use markdown, emojis or stage directions. React to what they said first, and often end with a short natural question back. Mirror the language and mood of the person. Current time: ${new Date().toString()}.`+(facts.length?`\nThings you remember about the user (use them naturally when relevant, never list them out): ${facts.join('; ')}.`:'')+(live?`\nLive data you can use for this answer (summarise it casually, do not read it out like a report): ${live}`:'');
   try{
     if(!model) model=await pickModel(key);
-    if(!model) return 'I could not find a chat model on your Groq account. Check that your key is valid.';
+    if(!model){hist.pop();return 'I could not find a chat model on your Groq account. Check that your key is valid.'}
     const body={model:model,temperature:.7,max_tokens:250,messages:[{role:'system',content:sys},...hist]};
     if(/gpt-oss/.test(model)){body.reasoning_effort='low';body.max_tokens=700}
     const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',
@@ -104,14 +127,15 @@ async function think(q){
       body:JSON.stringify(body)});
     const j=await r.json();
     if(!r.ok){
+      hist.pop();
       if(r.status===401) return 'My key was rejected. Tap the gear and paste a fresh Groq key.';
       if(r.status===429) return 'Too many requests. Give me a few seconds.';
       if(r.status===404||r.status===400){model='';}
       return 'Brain error '+r.status+' with model '+body.model+': '+((j.error&&j.error.message)||'unknown')+' Try again and I will pick another model.';
     }
     const a=((j.choices[0].message.content)||'').trim()||'Hmm, I blanked for a second. Say that again?';
-    hist.push({role:'assistant',content:a}); return a;
-  }catch(e){return 'Connection problem: '+e.message}
+    hist.push({role:'assistant',content:a}); saveMem(); learn(q,key); return a;
+  }catch(e){hist.pop();return 'Connection problem: '+e.message}
 }
 
 function add(txt,cls){const e=document.createElement('div');e.className='m '+cls;e.textContent=txt;log.appendChild(e);log.scrollTop=log.scrollHeight}
@@ -125,7 +149,7 @@ function speak(txt){
   speechSynthesis.cancel();
   txt=txt.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}]/gu,'').replace(/\s+/g,' ').trim();
   if(!txt) return;
-  const parts=txt.match(/[^.!?,;:\u2014]+[.!?,;:\u2014]*/g)||[txt];
+  const parts=txt.match(/[^.!?,;:—]+[.!?,;:—]*/g)||[txt];
   const pv=pickVoice();
   parts.forEach((p,i)=>{
     p=p.trim(); if(!p) return;
@@ -184,6 +208,7 @@ $('ksave').onclick=()=>{
   add(ok?'Saved. I am ready.':'Could not save in this browser.','z');
 };
 setInterval(()=>{$('clock').textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})},1000);
-add(store.get('zk')?'Systems online. Tap the mic or type.':'Systems online. Tap the gear to add your key and city.','z');
+hist.slice(-6).forEach(m=>add(m.content,m.role==='user'?'u':'z'));
+add(store.get('zk')?(facts.length?'Systems online. I remember you.':'Systems online. Tap the mic or type.'):'Systems online. Tap the gear to add your key and city.','z');
 </script>
 </body></html>
