@@ -2,63 +2,91 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="ZARVIS">
 <meta name="theme-color" content="#02060d">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0BAMAAADP4xsBAAAAJFBMVEX///8C//9AaHNATVUCR1YmMDgCMT0FISsFFh8CChICBg4CBg3fpsr3AAAL/UlEQVR42u2bTXLbPBKGH4DWHswJGJ6AVbqINj6lN9p/R5hSFU/A8AQh9ioSs+gGCFKg5CSemcVEVY4dCnzVfPsX3ZD5h//Uy/IX+i/0X+i/0L//evvswin9ZdwXQge/+d8E9ddAC/AKXwPTJ8DfPsXERmwRenrJy9snRN7ygQodpvqPoKcMeMqVOFG/EvztFfK0U2RS4mRc8O537XoiTAK3pWTSqwWqPim13ir3b+1aLGSqn8n99hL5wULChHFC9FNs889z5GQhW7vGOPmjPnbOQ+iEXDI/AX2BfaTGAAl5r0XRo1qPJ/yi1JOadPCiwGXMxGmEEZHbuAOxD6CFjongg9/iyqsFaiXjiJIytCAqsgLPvbx3TpKv2PWnoYWFHDniZuhtwhZuPqdGzwSB4BHk+bZB5nYDBlkXkHWfgw5p/cQywg4Y5NIQ18gNn4L2eJFoYhmZb6UHm28wCmNe7/iEowclmgDjynLVqcBR8PMyNoFA8OUQ+FayDiE6eJaIHHFFh7eIDVM91QECj4nBHtEhKnxEBkjyD3FliRJb1qGwMm5tjraV3z2VYo8En+54BR1lCDDQA5xVSNuKFwJ0crFfRsKR2LYUmAITnkU4Pcc3mujhK0dzv4BX7bySOuD1GZdxTshzYaVgM0T2fHgBLQt88Er0GZTYJsk+Z9g3Ria8CvUMWoHxLPQ5G1igdnpDtWILJQr+DNrjCfhIRxWv9wAGs+MEmBnljgdF2kJ2CSgd0Zy3Vk2/CYG3ZZRbnnMdktD0O8iG7JE7sG3byIp+iWKHJ9CeJLQ8b9u2bVYl+E0Ss02iRNn2T9W4Cl118m5LMordQ9iGcyb2MzWq/ajQneRXaKpszZIbuYVOxV4t99jRQxQ6W1OdGXeWEYWvVOzw3NF9EMFVaBotlZqNiVRi7Kauo0pnxvXmYrwOeAj4ZZXM4NLqj+QnHQ04cN7qwgXvgE1GeHB0AiO92Bc4jC7610fMXPtM2UHPGHjm6PJIfmHO6UypcPe3z5ifWfB7RopFcJ95S0j58B2A+xVup3Yjdk/fPc3oAY8PgfHBiz6Ad0Hm9H4R/F31MYagGaRESFCkeY0T0yTIp/d12eldsaf1IWeVIpSllne8hI8sK97hdNk8yTvcM+4llWmA8mU15s+TXPt+VeS6rmu15fdoiksuRNjG1cegOqp99CwAKLKC6u93uAKMqOPOjMdBNUTb6aE7J7HvipztNhzwzl2FBrpOlOMDIRy7zCKW2kna437lAqYWzxZCTA1c+IhCn6nEIY+k9hq55hSB+gWunGS7ZWq3ylzDCa4D3KJ3zTFS+LKFIFbdpahz53SRyj9FB6Pbr3fuSof+CNn+SZbpUylQsVy5gNu1VmoHDi70efDtD7NMiFadSgHxj7RBzHcpDgMnoNPUHMnOyyi7LcjyVNV1zFww7GsEMCL2nKfmecUouUzIa4MqkpP2blPKu7V8XF9VeV28DaxvG55h7NO+cGDmBA63tkRCbDo57/yJmQ5aBiFbUqmv99Brrq+0Hm1GuKSSKfhBH7NOldTlKlK0Q1Smr9dUY7eF05JdtE2/Ch1+DprRBwl4DjjRr/VE0uORN85ZUTpHlUH4OQLDMAKKjQPmuLZQq+yMb1fhXaJx+BGGAZZhhNEnRmIp3+hdJeMLJF/EqlFciXyEASIhI8uPKLTGvwQT8sJw5+jRF51Rf8EA4ScMhGmapollZJmkjuAknq9668cnjh4dy2h2iXyMDAS/DMMgO+AxaeEe/6ie7mUedn4X5eMnC8GLDseJhcUrI5dNebnFsBu7Xii4NGFkxCeuPSM/WOnOS828ErZbJ5/FQAIBriflw7MwpU9dgl/Ai42coh6hE+tbnf2grZWChQMWxpD1iIbAuOy3VrwocR5e4oij5Ne1mgF+sEaXaSqCbEucHOC+6mif9jKdXO7rx20FKBKybLX4E8JGv0uAxRfCeLl62rCx772Nuyvjw4oS9zZvRsZ2xJLJvKu28houk3tcM0eKfrb42QNwPakex4VlL+PCKO+K9S2/0GQeDhksXUiWufzWyOfwtQx/NKgaX/z/c1133amsjSxfBBpb/ytzGf+blNxeEuL5gpcvpgLnvgLbHXNddV+E/AnjczQ/Hq82Gci5TPnnjK958f9fGfm0h3rn9wawNp8y7BLk4QXbFsYUh4TYFOQ90Nj9KoulkXfvXIjdnh2azWvxmDubPAqZQup2WcCNKJqxtc+RfY559iTNTm/NU72aAsxBQvoGZvukBqzjWcH7eK3J/j1xXSuKLSNuvet62tx/8PBmN5qLgcU0uydugO+U5xrmlcuYuH/RNY2xK3ZraOx+H/mEENVrlTVjL3cFd1hquzLtLDip3qRYMdkAwSR7snlccYXJAWAaGlwbm6mOhu9ZGDaZnC6zVFuIWmPU/VVv/4bFuLYB2qbGYp2+c91n4aeRb47z59N6UzO2g3Fepow2mnWQRaG4SdqmgrhHWrKukw+A+QZt7IfYBltrh+K+KWu7rdgbbzQbG1u6RKhZRzK2wX5fib7kBUhjit647vL7tey8ximRa2SWZNsGGpeq+1gLjXE7n2n1rbBJYhkbGPKdj/nGGAVv69V6KsbmsfVc8sZofcvIAHT35HLmWyREkT1wpxMqhmR7pmAhbpIf0fUywFzB9RL79CYadr1O4a4AQ8uQDKRs13Il64L3fcUqtrTCYz8cj+dORS8bbICu2Vr21mVMNneJLZqwHiuoU7SY5Fm6ed7OhHKXsexMJCpj7pmp5JkfjoFIpX+t8vlPtTOQvfE5m/qvsvi+PTST5uxB9tC9tlTnVYumHFRd6lkoHReu8VzEdlPp4Uon3cDVF90TRxd/7LWfSXvifpVjHFN+GIcJPjjFvq78iC+6ArTTVkWlRVYFFi7cI9q0BowJ7nBp4Zx3Sg3uwEJS2pvXuczpwjUBTtM0RbmvvEOjfd25kEBzCzGat7qoQyvZ934lJ0Q+5oOT3F0Bvc4tnMGYw9xolJGqi6n2ItgxdAovHxrzGu3rUm2z+aPLOBMBV6c8RewQCYGPOEqxeUFuUkOgYCFi2d3qOLWDE4pNNrI67YJlF2OTK0od36mSsUpr8h3uH1nL4UNGHqZeLbrKK8FSUHW4baZRWzoDHx8R+ArVJWuHxMLJKKNHqcBsJk9xb3ie+zguSTsMU5xrHanRYHDOZozExFedt/PGcVsCVFicM6nqOijMjHQx+6weYYazgp/O3W6n2UNHYx6q8Ldtpeed1+GliO11knmrOjU3NP9IntHBDFZYdodlenykJk2TwpTStc3P+CzqQ3Ga1Kw3HxPijMGqi40PB1m0BO63xVZnMeZhV2ILta/LxC61aLrUtliS0I49H49SG1wUu2fIWjTNY+NmGbmp0MLHky2p8+A8zjejPOuwKRWNm7LmjVUdVjQ4s6kTClIbXCZ2RmkV41dWzS66Igq946MUVJ3B0Vbd/tBaYfh/A85WhTbPd7suii2anLcHQvb7okiHCr2zEVsIIc7glJLbahRjsvL4YbPSEZk2z/fozoiROJqq2zQ5lvVXt54dPNNQK7DjBddOHcs2VamBktxo7oGKFoOhflBiOTxhqHFYCZ63yPiw8R9BFjpcabpXcHSJ/85AK09+i0fKhtV/9FBEZ5uYEd1zR085S5+x2fW4ZFC1Wt+ZBuPSHS8JSTI4bMTeGfgtIrdxZUHowr7ROJleOO+8pep6bYfuTyFyxuqhT9HOZw6TTnLCcWKC4cglOWMbjDPOuPIJW1vs7DlwcrK12aTFbYIU5AM6ytCiF4eTXTPnx3x97qCNa0o6POqHxPWiSqh24OezNOycEl0U+r9+JvhrTjIfND7ryQDOG+frad+AbEnnr50S9ytHu+Uws54aLzTNa9LJ7qOvcxx1gqUYkhPQ5qFvVSfkQnb5X57QP/5egQIb9xz5Wde9nozzUAePqR++5VPzAvlpQ1+xTR38/ohIzUvk5w39WjcVez3WevX515SejyHqiTp4PYAzbQ+L1K++APViwlEHL3ywP4/Dy+8+vZpwmJoDuzb1H3/tSS1kZ9df8o0qtRBTU+pv/+lXzFYlfvm31z4r598vIf6F/gv9fwf9bz/bZt7fKoHBAAAAAElFTkSuQmCC">
 <title>ZARVIS</title>
 <style>
-:root{--c:#00e5ff;--c2:#7c4dff;--bg:#02060d;--dim:#0a1a2a}
+:root{--c:#00e5ff;--bg:#02060d;--dim:#0a1a2a;--amber:#ffb300}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;height:100%;background:var(--bg);color:var(--c);font-family:ui-monospace,Menlo,monospace;overflow:hidden}
-body{display:flex;flex-direction:column;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);background:radial-gradient(circle at 50% 22%,#06233a 0,var(--bg) 60%)}
-header{display:flex;justify-content:space-between;padding:10px 16px;font-size:11px;letter-spacing:.2em;opacity:.8}
-#orbwrap{height:170px;display:flex;align-items:center;justify-content:center;position:relative;flex:none}
-.ring{position:absolute;border-radius:50%;border:1px solid var(--c);box-shadow:0 0 14px var(--c),inset 0 0 14px #00e5ff44}
-.r1{width:140px;height:140px;border-style:dashed;animation:spin 18s linear infinite}
-.r2{width:104px;height:104px;border-color:var(--c2);box-shadow:0 0 14px var(--c2);animation:spin 9s linear infinite reverse}
-.core{width:60px;height:60px;border-radius:50%;background:radial-gradient(circle,#fff 0,var(--c) 35%,transparent 72%);animation:pulse 3s ease-in-out infinite}
-body.listening .core{animation-duration:.6s;background:radial-gradient(circle,#fff 0,#ff4081 35%,transparent 72%)}
-body.speaking .core{animation-duration:.9s;background:radial-gradient(circle,#fff 0,var(--c2) 35%,transparent 72%)}
+body{display:flex;flex-direction:column;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);background:radial-gradient(circle at 50% 24%,#06304a 0,#04121f 38%,var(--bg) 70%);transition:--c .3s}
+body.listening{--c:var(--amber)}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.05;background:repeating-linear-gradient(0deg,#fff 0 1px,transparent 1px 3px)}
+.corner{position:fixed;width:22px;height:22px;border:2px solid var(--c);opacity:.7;pointer-events:none}
+.tl{top:calc(env(safe-area-inset-top) + 6px);left:6px;border-right:0;border-bottom:0}
+.tr{top:calc(env(safe-area-inset-top) + 6px);right:6px;border-left:0;border-bottom:0}
+.bl{bottom:calc(env(safe-area-inset-bottom) + 6px);left:6px;border-right:0;border-top:0}
+.br{bottom:calc(env(safe-area-inset-bottom) + 6px);right:6px;border-left:0;border-top:0}
+header{display:flex;justify-content:space-between;align-items:center;padding:14px 22px 4px;font-size:11px;letter-spacing:.22em;opacity:.9}
+#gear{cursor:pointer;font-size:18px;margin-left:10px}
+#stats{display:flex;justify-content:center;gap:18px;font-size:11px;letter-spacing:.16em;opacity:.75;min-height:16px;padding:2px 16px}
+#orbwrap{height:210px;display:flex;align-items:center;justify-content:center;flex:none}
+.reactor{width:190px;height:190px;position:relative;display:flex;align-items:center;justify-content:center}
+.ring{position:absolute;border-radius:50%}
+.r1{inset:0;border:1px dashed var(--c);box-shadow:0 0 14px var(--c);animation:spin 26s linear infinite}
+.r2{inset:20px;background:repeating-conic-gradient(var(--c) 0 5deg,transparent 5deg 12deg);-webkit-mask:radial-gradient(closest-side,transparent 78%,#000 79%,#000 97%,transparent 100%);mask:radial-gradient(closest-side,transparent 78%,#000 79%,#000 97%,transparent 100%);opacity:.8;animation:spin 16s linear infinite reverse}
+.r3{inset:50px;border:2px solid var(--c);box-shadow:0 0 18px var(--c),inset 0 0 18px #00e5ff55}
+.core{width:50px;height:50px;border-radius:50%;background:radial-gradient(circle,#fff 0,var(--c) 40%,transparent 72%);animation:pulse 3s ease-in-out infinite}
+body.listening .core{animation-duration:.7s}
+body.speaking .core{animation-duration:.8s}
+body.speaking .r3{box-shadow:0 0 30px var(--c),inset 0 0 26px var(--c)}
 @keyframes spin{to{transform:rotate(360deg)}}
-@keyframes pulse{50%{transform:scale(1.25);opacity:.7}}
-#log{flex:1;overflow-y:auto;padding:8px 16px;display:flex;flex-direction:column;gap:10px}
-.m{max-width:86%;padding:10px 12px;font-size:14px;line-height:1.4;border:1px solid #00e5ff55;background:#00e5ff0d;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px))}
-.m.u{align-self:flex-end;border-color:#7c4dff88;background:#7c4dff14;color:#d1c4ff}
-.m.z:before{content:"ZARVIS \25B8 ";opacity:.6;font-size:10px;letter-spacing:.15em}
-#bar{display:flex;gap:8px;padding:10px 12px 12px;border-top:1px solid #00e5ff33;background:#02060dcc}
+@keyframes pulse{50%{transform:scale(1.3);opacity:.75}}
+#log{flex:1;overflow-y:auto;padding:8px 18px;display:flex;flex-direction:column;gap:10px;-webkit-overflow-scrolling:touch}
+.m{max-width:88%;padding:10px 12px;font-size:14px;line-height:1.4;border:1px solid #00e5ff55;background:#00e5ff0d;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));color:#c8f7ff}
+.m.u{align-self:flex-end;border-color:#ffb30077;background:#ffb30012;color:#ffe3a3}
+.m.z:before{content:"ZARVIS \25B8 ";opacity:.6;font-size:10px;letter-spacing:.15em;color:var(--c)}
+.acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+a.act{display:inline-block;padding:9px 12px;border:1px solid var(--amber);color:var(--amber);background:#ffb30014;border-radius:4px;font-size:13px;text-decoration:none;box-shadow:0 0 8px #ffb30044}
+a.act:active{background:#ffb30040}
+#bar{display:flex;gap:7px;padding:10px 12px 12px;border-top:1px solid #00e5ff33;background:#02060dcc}
 #t{flex:1;min-width:0;background:var(--dim);border:1px solid #00e5ff66;color:#e0faff;padding:12px;font:16px ui-monospace,Menlo,monospace;border-radius:4px;outline:none}
-button{background:var(--dim);border:1px solid var(--c);color:var(--c);width:48px;font-size:20px;border-radius:4px;box-shadow:0 0 8px #00e5ff55}
+button{background:var(--dim);border:1px solid var(--c);color:var(--c);width:42px;font-size:19px;border-radius:4px;box-shadow:0 0 8px #00e5ff55;padding:0}
 button:active{background:#00e5ff33}
-#mic.on{border-color:#ff4081;color:#ff4081;box-shadow:0 0 12px #ff4081}
+#mic.on,#hf.on{border-color:var(--amber);color:var(--amber);box-shadow:0 0 12px var(--amber)}
 #mute.off{opacity:.4}
-#kp{display:none;flex-direction:column;gap:8px;padding:0 12px 8px}
+#kp{display:none;flex-direction:column;gap:8px;padding:0 14px 8px;max-height:46vh;overflow-y:auto}
 #kp.show{display:flex}
-#kp input{background:var(--dim);border:1px solid #7c4dff;color:#e0faff;padding:10px;font:16px ui-monospace,Menlo,monospace;border-radius:4px;outline:none;width:100%}
+#kp label{font-size:11px;opacity:.75;letter-spacing:.1em}
+#kp input,#kp select{background:var(--dim);border:1px solid #00e5ff88;color:#e0faff;padding:10px;font:16px ui-monospace,Menlo,monospace;border-radius:4px;outline:none;width:100%}
 #ksave{width:100%;height:42px;font-size:15px}
 </style></head>
 <body>
-<header><span>ZARVIS // LIVE</span><span><span id="clock"></span> <span id="gear" style="cursor:pointer;font-size:18px;margin-left:8px">&#9881;</span></span></header>
+<div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+<header><span>Z.A.R.V.I.S // ONLINE</span><span><span id="clock"></span><span id="gear">&#9881;</span></span></header>
+<div id="stats"><span id="wx"></span><span id="tmr"></span></div>
 <div id="kp">
-<input id="kin" type="password" placeholder="Groq key (gsk_...)" autocomplete="off">
-<input id="cin" type="text" placeholder="Your city for weather (e.g. Mumbai)" autocomplete="off">
+<label>BRAIN KEY (Groq, starts with gsk_)</label>
+<input id="kin" type="password" placeholder="Paste key (leave empty to keep current)" autocomplete="off">
+<label>YOUR CITY (weather)</label>
+<input id="cin" type="text" placeholder="e.g. Mumbai" autocomplete="off">
+<label>YOUR IPHONE SHORTCUTS (names, separated by commas)</label>
+<input id="sin" type="text" placeholder="e.g. Flashlight On, Flashlight Off, Set Alarm" autocomplete="off">
+<label>VOICE</label>
+<select id="vsel"></select>
 <button id="ksave">Save</button>
 </div>
-<div id="orbwrap"><div class="ring r1"></div><div class="ring r2"></div><div class="core"></div></div>
+<div id="orbwrap"><div class="reactor"><div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div><div class="core"></div></div></div>
 <div id="log"></div>
 <div id="bar">
 <button id="mic" aria-label="Voice">&#127908;</button>
 <input id="t" placeholder="Speak or type..." autocomplete="off" enterkeyhint="send">
 <button id="send" aria-label="Send">&#10148;</button>
+<button id="hf" aria-label="Hands-free">&#127911;</button>
 <button id="mute" aria-label="Voice replies">&#128266;</button>
 </div>
 <script>
 const $=id=>document.getElementById(id), log=$('log');
-let voiceOut=true, hist=[];
+let voiceOut=true, hist=[], handsFree=false, busy=false, listening=false, gotResult=false, model='';
 const store={
   get:k=>{try{return localStorage.getItem(k)||''}catch(e){return ''}},
   set:(k,v)=>{try{localStorage.setItem(k,v);return true}catch(e){return false}}
 };
 
+/* ---------- memory ---------- */
 try{hist=JSON.parse(store.get('zh')||'[]')}catch(e){hist=[]}
 let facts=[];
 try{facts=JSON.parse(store.get('zf')||'[]')}catch(e){facts=[]}
@@ -67,7 +95,7 @@ async function learn(q,key){
   if(q.length<8||!model) return;
   try{
     const body={model:model,temperature:0,max_tokens:150,messages:[
-      {role:'system',content:'Extract lasting personal facts about the user from their message (name, family, job, city, likes, dislikes, goals, routines, important dates). Reply with ONLY a JSON array of short third-person strings, for example ["The user is called Ben"]. If there is nothing worth remembering, reply []. Facts already known: '+JSON.stringify(facts)},
+      {role:'system',content:'Extract lasting personal facts about the user from their message (name, how they like to be addressed, family, job, city, likes, dislikes, goals, routines, important dates, phone numbers of contacts and who they belong to). Reply with ONLY a JSON array of short third-person strings, for example ["The user is called Ben"]. If there is nothing worth remembering, reply []. Facts already known: '+JSON.stringify(facts)},
       {role:'user',content:q}]};
     if(/gpt-oss/.test(model)){body.reasoning_effort='low';body.max_tokens=500}
     const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',
@@ -76,11 +104,12 @@ async function learn(q,key){
     const j=await r.json();
     const m=((j.choices[0].message.content)||'').match(/\[[\s\S]*\]/);
     if(!m) return;
-    const arr=JSON.parse(m[0]);
-    arr.forEach(f=>{f=String(f).trim();if(f&&f.length<160&&!facts.some(x=>x.toLowerCase()===f.toLowerCase())) facts.push(f)});
+    JSON.parse(m[0]).forEach(f=>{f=String(f).trim();if(f&&f.length<160&&!facts.some(x=>x.toLowerCase()===f.toLowerCase())) facts.push(f)});
     saveMem();
   }catch(e){}
 }
+
+/* ---------- live data ---------- */
 async function getWeather(){
   const city=store.get('zc')||'Delhi';
   const g=await (await fetch('https://geocoding-api.open-meteo.com/v1/search?count=1&name='+encodeURIComponent(city))).json();
@@ -96,8 +125,68 @@ async function getNews(){
   const items=(r.items||[]).slice(0,6).map(i=>i.title);
   return items.length?'LIVE TOP NEWS HEADLINES: '+items.join(' | '):'News is unavailable right now.';
 }
+async function loadWx(){
+  try{
+    const city=store.get('zc'); if(!city) return;
+    const g=await (await fetch('https://geocoding-api.open-meteo.com/v1/search?count=1&name='+encodeURIComponent(city))).json();
+    if(!g.results||!g.results.length) return;
+    const p=g.results[0];
+    const w=await (await fetch('https://api.open-meteo.com/v1/forecast?latitude='+p.latitude+'&longitude='+p.longitude+'&current=temperature_2m&timezone=auto')).json();
+    $('wx').textContent=p.name.toUpperCase()+' '+Math.round(w.current.temperature_2m)+'\u00B0C';
+  }catch(e){}
+}
 
-let model='';
+/* ---------- phone actions ---------- */
+const APPS={youtube:'youtube://',spotify:'spotify://',instagram:'instagram://',whatsapp:'whatsapp://',telegram:'tg://',maps:'maps://',music:'music://',messages:'sms:',phone:'tel:',facetime:'facetime://',mail:'message://',notes:'mobilenotes://',calendar:'calshow://',reminders:'x-apple-reminderkit://',photos:'photos-redirect://',files:'shareddocuments://',chrome:'googlechrome://',twitter:'twitter://'};
+function parseActions(text){
+  const acts=[];
+  const clean=String(text).replace(/\[\[\s*(\w+)\s*:\s*([^\]]*?)\s*\]\]/g,(m,t,v)=>{acts.push({t:t.toLowerCase(),v:v.trim()});return ''}).replace(/\[\[[^\]]*$/,'').replace(/\s+/g,' ').trim();
+  return {clean:clean,acts:acts};
+}
+function toAction(a){
+  const e=encodeURIComponent, parts=a.v.split('|');
+  const num=parts[0].replace(/[^\d+]/g,''), msg=(parts[1]||'').trim();
+  switch(a.t){
+    case 'tel': return num?{label:'\uD83D\uDCDE Call '+num,url:'tel:'+num}:null;
+    case 'sms': return num?{label:'\uD83D\uDCAC Text '+num,url:'sms:'+num+(msg?'&body='+e(msg):'')}:null;
+    case 'wa': return num?{label:'\uD83D\uDFE2 WhatsApp '+num,url:'https://wa.me/'+num.replace('+','')+(msg?'?text='+e(msg):'')}:null;
+    case 'maps': return a.v?{label:'\uD83D\uDDFA Map: '+a.v,url:'https://maps.apple.com/?q='+e(a.v)}:null;
+    case 'nav': return a.v?{label:'\uD83E\uDDED Directions: '+a.v,url:'https://maps.apple.com/?dirflg=d&daddr='+e(a.v)}:null;
+    case 'search': return a.v?{label:'\uD83D\uDD0D Search: '+a.v,url:'https://www.google.com/search?q='+e(a.v)}:null;
+    case 'youtube': return a.v?{label:'\u25B6 YouTube: '+a.v,url:'https://www.youtube.com/results?search_query='+e(a.v)}:null;
+    case 'open': {const u=APPS[a.v.toLowerCase()];return u?{label:'\uD83D\uDCF1 Open '+a.v,url:u}:null}
+    case 'shortcut': return a.v?{label:'\u26A1 Run: '+a.v,url:'shortcuts://run-shortcut?name='+e(a.v)}:null;
+  }
+  return null;
+}
+let tmrId=null;
+function startTimer(mins){
+  const ms=Math.round(parseFloat(mins)*60000); if(!(ms>0)) return;
+  clearInterval(tmrId); const end=Date.now()+ms;
+  tmrId=setInterval(()=>{
+    const left=end-Date.now();
+    if(left<=0){
+      clearInterval(tmrId);tmrId=null;$('tmr').textContent='';
+      const m='Sir, your timer is up.';add(m,'z');speak(m);
+      try{navigator.vibrate&&navigator.vibrate([300,150,300])}catch(e){}
+      return;
+    }
+    const s=Math.ceil(left/1000);
+    $('tmr').textContent='TIMER '+Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
+  },500);
+}
+function runActions(acts,el){
+  const box=document.createElement('div');box.className='acts';
+  acts.forEach(a=>{
+    if(a.t==='timer'){startTimer(a.v);return}
+    if(a.t==='note'){if(a.v&&!facts.includes('Note: '+a.v)){facts.push('Note: '+a.v);saveMem()}return}
+    const x=toAction(a); if(!x) return;
+    const l=document.createElement('a');l.className='act';l.href=x.url;l.textContent=x.label;box.appendChild(l);
+  });
+  if(box.children.length) el.appendChild(box);
+}
+
+/* ---------- brain ---------- */
 async function pickModel(key){
   const r=await fetch('https://api.groq.com/openai/v1/models',{headers:{'Authorization':'Bearer '+key}});
   const j=await r.json();
@@ -105,26 +194,31 @@ async function pickModel(key){
   const prefs=['llama-3.3-70b-versatile','openai/gpt-oss-120b','openai/gpt-oss-20b','llama-3.1-8b-instant'];
   return prefs.find(p=>ids.includes(p))||ids[0]||'';
 }
+function buildSystem(live){
+  const sc=store.get('zs').trim();
+  return 'You are ZARVIS, a personal AI assistant in the style of Tony Stark\'s JARVIS: calm, composed, razor-sharp, dryly witty and impeccably polite, with a hint of British understatement. Address the user as "sir" unless they have told you otherwise. This is a spoken conversation: reply in 1-2 short natural sentences, three at most, with no markdown, lists, emojis or stage directions. Be proactive and confident, and occasionally end with a brief question or suggestion. Mirror the language the user speaks. Current time: '+new Date().toString()+'.'
+  +(facts.length?'\nThings you remember about the user (use them naturally when relevant, never list them out): '+facts.join('; ')+'.':'')
+  +'\nYou can control the user\'s phone by putting action tags at the very END of your reply, after your spoken words. Use a tag only when the user clearly asks for that action. Tags: [[tel:NUMBER]] call; [[sms:NUMBER|message]] text; [[wa:NUMBER|message]] WhatsApp; [[maps:place]] show on map; [[nav:place]] directions; [[search:query]] web search; [[youtube:query]] YouTube search; [[open:APP]] open an app (youtube, spotify, instagram, whatsapp, telegram, maps, music, messages, phone, facetime, mail, notes, calendar, reminders, photos, files); [[timer:MINUTES]] countdown timer that works while this page stays open; [[note:text]] save a note to remember. [[shortcut:NAME]] runs one of the user\'s iPhone Shortcuts; the only ones that exist are: '+(sc||'none')+'. Never invent phone numbers: if you do not know one, ask for it. When you use a tag, say in a few words what you are doing, for example "Calling now, sir." The user taps a button to confirm. If asked for something no tag can do, say so briefly and offer the nearest option.'
+  +(live?'\nLive data you can use for this answer (summarise it naturally, do not read it out like a report): '+live:'');
+}
 async function think(q){
   const key=store.get('zk');
-  if(!key) return 'I need my brain key first. Tap the gear at the top and paste your Groq key.';
+  if(!key) return 'I need my brain key first, sir. Tap the gear at the top and paste your Groq key.';
   const s=q.toLowerCase();
-  if(/forget (everything|all|my memory|me)|clear (your |my )?memory|wipe (your )?memory/.test(s)){facts=[];hist=[];saveMem();return 'Done. My memory is wiped clean. Hi, nice to meet you.'}
+  if(/forget (everything|all|my memory|me)|clear (your |my )?memory|wipe (your )?memory/.test(s)){facts=[];hist=[];saveMem();return 'Memory wiped, sir. Pleased to meet you.'}
   let live='';
   try{
     if(/weather|temperature|rain|forecast|umbrella|how hot|how cold/.test(s)) live+=await getWeather()+'\n';
     if(/news|headline|happening|going on in the world/.test(s)) live+=await getNews()+'\n';
   }catch(e){live+='Live data fetch failed.\n'}
   hist.push({role:'user',content:q}); hist=hist.slice(-20);
-  const sys=`You are ZARVIS, a warm, friendly companion having a real spoken conversation, like a close friend on a call. Talk the way people actually talk: casual, contractions, short sentences, natural reactions like oh nice, hmm, or ha true. Usually 1-2 short sentences, never more than 3. Never list things, never use markdown, emojis or stage directions. React to what they said first, and often end with a short natural question back. Mirror the language and mood of the person. Current time: ${new Date().toString()}.`+(facts.length?`\nThings you remember about the user (use them naturally when relevant, never list them out): ${facts.join('; ')}.`:'')+(live?`\nLive data you can use for this answer (summarise it casually, do not read it out like a report): ${live}`:'');
   try{
     if(!model) model=await pickModel(key);
     if(!model){hist.pop();return 'I could not find a chat model on your Groq account. Check that your key is valid.'}
-    const body={model:model,temperature:.7,max_tokens:250,messages:[{role:'system',content:sys},...hist]};
-    if(/gpt-oss/.test(model)){body.reasoning_effort='low';body.max_tokens=700}
+    const body={model:model,temperature:.7,max_tokens:300,messages:[{role:'system',content:buildSystem(live)},...hist]};
+    if(/gpt-oss/.test(model)){body.reasoning_effort='low';body.max_tokens=800}
     const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
-      body:JSON.stringify(body)});
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},body:JSON.stringify(body)});
     const j=await r.json();
     if(!r.ok){
       hist.pop();
@@ -133,23 +227,28 @@ async function think(q){
       if(r.status===404||r.status===400){model='';}
       return 'Brain error '+r.status+' with model '+body.model+': '+((j.error&&j.error.message)||'unknown')+' Try again and I will pick another model.';
     }
-    const a=((j.choices[0].message.content)||'').trim()||'Hmm, I blanked for a second. Say that again?';
-    hist.push({role:'assistant',content:a}); saveMem(); learn(q,key); return a;
+    const a=((j.choices[0].message.content)||'').trim()||'Apologies, sir, I lost my train of thought. Say that again?';
+    hist.push({role:'assistant',content:parseActions(a).clean}); saveMem(); learn(q,key); return a;
   }catch(e){hist.pop();return 'Connection problem: '+e.message}
 }
 
-function add(txt,cls){const e=document.createElement('div');e.className='m '+cls;e.textContent=txt;log.appendChild(e);log.scrollTop=log.scrollHeight}
+/* ---------- voice out ---------- */
+function add(txt,cls){const e=document.createElement('div');e.className='m '+cls;e.textContent=txt;log.appendChild(e);log.scrollTop=log.scrollHeight;return e}
 function pickVoice(){
-  const v=speechSynthesis.getVoices().filter(x=>/^en/i.test(x.lang));
+  const all=speechSynthesis.getVoices(), saved=store.get('zv');
+  if(saved){const s=all.find(x=>x.name===saved);if(s) return s}
+  const v=all.filter(x=>/^en/i.test(x.lang));
   const sc=x=>(/^Ava/i.test(x.name)?20:0)+(/premium/i.test(x.name)?6:0)+(/enhanced/i.test(x.name)?5:0)+(/siri/i.test(x.name)?4:0)+(/^(Samantha|Daniel|Serena|Rishi|Karen|Oliver|Aaron)/i.test(x.name)?2:0)+(/en[-_](IN|GB|US)/i.test(x.lang)?1:0);
   return v.sort((a,b)=>sc(b)-sc(a))[0]||null;
 }
-function speak(txt){
-  if(!voiceOut||!window.speechSynthesis) return;
+function speak(txt,done){
+  let fin=false;
+  const end=()=>{if(fin) return;fin=true;document.body.classList.remove('speaking');if(done) done()};
+  if(!voiceOut||!window.speechSynthesis){end();return}
   speechSynthesis.cancel();
-  txt=txt.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}]/gu,'').replace(/\s+/g,' ').trim();
-  if(!txt) return;
-  const parts=txt.match(/[^.!?,;:—]+[.!?,;:—]*/g)||[txt];
+  txt=String(txt).replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}]/gu,'').replace(/\s+/g,' ').trim();
+  if(!txt){end();return}
+  const parts=txt.match(/[^.!?,;:\u2014]+[.!?,;:\u2014]*/g)||[txt];
   const pv=pickVoice();
   parts.forEach((p,i)=>{
     p=p.trim(); if(!p) return;
@@ -158,57 +257,103 @@ function speak(txt){
     u.rate=q?1.02:.96; u.pitch=q?1.08:1;
     if(pv) u.voice=pv;
     if(i===0) u.onstart=()=>document.body.classList.add('speaking');
-    if(i===parts.length-1) u.onend=u.onerror=()=>document.body.classList.remove('speaking');
+    if(i===parts.length-1){u.onend=end;u.onerror=end}
     speechSynthesis.speak(u);
   });
+  setTimeout(end,5000+txt.length*110);
 }
 function unlockSpeech(){
   try{if(window.speechSynthesis){const w=new SpeechSynthesisUtterance(' ');w.volume=0;speechSynthesis.speak(w)}}catch(e){}
 }
+
+/* ---------- conversation ---------- */
+function finish(){busy=false;if(handsFree) setTimeout(startListening,400)}
 async function handle(q){
   q=q.trim(); if(!q) return;
-  unlockSpeech();
+  busy=true; unlockSpeech();
   add(q,'u'); $('t').value='';
-  const a=await think(q); add(a,'z');
-  setTimeout(()=>speak(a),300);
+  const raw=await think(q);
+  const p=parseActions(raw);
+  const el=add(p.clean||'Done, sir.','z');
+  runActions(p.acts,el);
+  setTimeout(()=>speak(p.clean,finish),300);
 }
 $('send').onclick=()=>handle($('t').value);
 $('t').onkeydown=e=>{if(e.key==='Enter')handle($('t').value)};
-$('mute').onclick=()=>{voiceOut=!voiceOut;$('mute').classList.toggle('off',!voiceOut);if(!voiceOut)speechSynthesis.cancel()};
+$('mute').onclick=()=>{voiceOut=!voiceOut;$('mute').classList.toggle('off',!voiceOut);if(!voiceOut&&window.speechSynthesis)speechSynthesis.cancel()};
 
+/* ---------- voice in ---------- */
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-let rec,listening=false;
+let rec;
+function startListening(){
+  if(!rec||listening||busy) return;
+  try{if(window.speechSynthesis) speechSynthesis.cancel()}catch(e){}
+  gotResult=false;
+  try{rec.start()}catch(e){}
+}
+function updateHF(){$('hf').classList.toggle('on',handsFree)}
 if(SR){
   rec=new SR();rec.lang='en-IN';rec.interimResults=false;rec.continuous=false;rec.maxAlternatives=1;
   rec.onstart=()=>{listening=true;$('mic').classList.add('on');document.body.classList.add('listening')};
-  rec.onend=()=>{listening=false;$('mic').classList.remove('on');document.body.classList.remove('listening')};
-  rec.onresult=e=>handle(e.results[0][0].transcript);
+  rec.onend=()=>{
+    listening=false;$('mic').classList.remove('on');document.body.classList.remove('listening');
+    if(handsFree&&!busy&&!gotResult) setTimeout(startListening,600);
+  };
+  rec.onresult=e=>{gotResult=true;handle(e.results[0][0].transcript)};
   rec.onerror=e=>{
     if(e.error==='aborted') return;
-    if(e.error==='no-speech') return add('I did not catch that. Tap the mic and try again.','z');
-    if(e.error==='not-allowed'||e.error==='service-not-allowed') return add('Mic is blocked. Allow the microphone for this site in Safari, and turn on Dictation in Settings > General > Keyboard.','z');
+    if(e.error==='no-speech'){if(!handsFree) add('I did not catch that. Tap the mic and try again.','z');return}
+    if(e.error==='not-allowed'||e.error==='service-not-allowed'){handsFree=false;updateHF();return add('Mic is blocked. Allow the microphone for this site in Safari, and turn on Dictation in Settings > General > Keyboard.','z')}
     add('Mic error: '+e.error,'z');
   };
 }
 $('mic').onclick=()=>{
   if(!rec) return add('Voice input is not supported here. Typing still works.','z');
   if(listening){try{rec.stop()}catch(e){}return}
-  speechSynthesis.cancel();
-  unlockSpeech();
-  try{rec.start()}catch(e){}
+  try{if(window.speechSynthesis) speechSynthesis.cancel()}catch(e){}
+  busy=false; unlockSpeech(); startListening();
 };
-$('gear').onclick=()=>{$('cin').value=store.get('zc');$('kp').classList.toggle('show')};
+$('hf').onclick=()=>{
+  if(!rec) return add('Hands-free needs voice input, which this browser does not support.','z');
+  handsFree=!handsFree; updateHF();
+  if(handsFree){add('Hands-free on, sir. I am listening. Tap the headphones again to stop.','z');busy=false;unlockSpeech();startListening()}
+  else{try{rec.stop()}catch(e){}add('Hands-free off.','z')}
+};
+
+/* ---------- settings ---------- */
+function fillVoices(){
+  const sel=$('vsel'); if(!window.speechSynthesis||!sel) return;
+  const cur=store.get('zv');
+  sel.innerHTML='<option value="">Auto (best available)</option>';
+  speechSynthesis.getVoices().filter(x=>/^en/i.test(x.lang)).forEach(x=>{
+    const o=document.createElement('option');o.value=x.name;o.textContent=x.name+' ('+x.lang+')';
+    if(x.name===cur) o.selected=true;sel.appendChild(o);
+  });
+}
+if(window.speechSynthesis){speechSynthesis.onvoiceschanged=fillVoices}
+fillVoices();
+$('gear').onclick=()=>{$('cin').value=store.get('zc');$('sin').value=store.get('zs');fillVoices();$('kp').classList.toggle('show')};
 $('ksave').onclick=()=>{
   const k=$('kin').value.trim(), c=$('cin').value.trim();
   let ok=true;
   if(k) ok=store.set('zk',k)&&ok;
-  if(c) ok=store.set('zc',c)&&ok;
+  ok=store.set('zc',c)&&ok;
+  ok=store.set('zs',$('sin').value.trim())&&ok;
+  ok=store.set('zv',$('vsel').value)&&ok;
   model='';
   $('kin').value='';$('kp').classList.remove('show');
-  add(ok?'Saved. I am ready.':'Could not save in this browser.','z');
+  loadWx();
+  add(ok?'Settings saved, sir.':'Could not save in this browser.','z');
 };
+
+/* ---------- startup ---------- */
 setInterval(()=>{$('clock').textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})},1000);
+loadWx();
 hist.slice(-6).forEach(m=>add(m.content,m.role==='user'?'u':'z'));
-add(store.get('zk')?(facts.length?'Systems online. I remember you.':'Systems online. Tap the mic or type.'):'Systems online. Tap the gear to add your key and city.','z');
+(function(){
+  const h=new Date().getHours();
+  const g=h<5?'Working late':h<12?'Good morning':h<17?'Good afternoon':'Good evening';
+  add(store.get('zk')?g+', sir. All systems online.':'Welcome, sir. Tap the gear to give me my brain key.','z');
+})();
 </script>
 </body></html>
