@@ -61,8 +61,8 @@ button:active{background:#00e5ff33}
 <div id="kp">
 <label>BRAIN KEY (Groq, starts with gsk_)</label>
 <input id="kin" type="password" placeholder="Paste key (leave empty to keep current)" autocomplete="off">
-<label>YOUR CITY (weather)</label>
-<input id="cin" type="text" placeholder="e.g. Mumbai" autocomplete="off">
+<label>YOUR CITY AND STATE (weather)</label>
+<input id="cin" type="text" placeholder="e.g. Tura, Meghalaya" autocomplete="off">
 <label>YOUR IPHONE SHORTCUTS (names, separated by commas)</label>
 <input id="sin" type="text" placeholder="e.g. Flashlight On, Flashlight Off, Set Alarm" autocomplete="off">
 <label>VOICE</label>
@@ -110,14 +110,24 @@ async function learn(q,key){
 }
 
 /* ---------- live data ---------- */
+async function geo(city){
+  const parts=city.split(',').map(x=>x.trim()).filter(Boolean);
+  const name=parts[0]||city, hint=parts.slice(1).join(' ').toLowerCase();
+  const g=await (await fetch('https://geocoding-api.open-meteo.com/v1/search?count=10&name='+encodeURIComponent(name))).json();
+  const rs=g.results||[]; if(!rs.length) return null;
+  if(hint){
+    const m=rs.find(r=>{const a=((r.admin1||'')+' '+(r.admin2||'')+' '+(r.country||'')).toLowerCase();return a.includes(hint)||(r.admin1&&hint.includes(r.admin1.toLowerCase()))});
+    if(m) return m;
+  }
+  return rs[0];
+}
 async function getWeather(){
   const city=store.get('zc')||'Delhi';
-  const g=await (await fetch('https://geocoding-api.open-meteo.com/v1/search?count=1&name='+encodeURIComponent(city))).json();
-  if(!g.results||!g.results.length) return 'Weather: could not find the city '+city+'.';
-  const p=g.results[0];
+  const p=await geo(city);
+  if(!p) return 'Weather: could not find the place '+city+'.';
   const w=await (await fetch('https://api.open-meteo.com/v1/forecast?latitude='+p.latitude+'&longitude='+p.longitude+'&current=temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto&forecast_days=1')).json();
   const c=w.current, d=w.daily;
-  return 'LIVE WEATHER for '+p.name+': now '+c.temperature_2m+'C (feels like '+c.apparent_temperature+'C), humidity '+c.relative_humidity_2m+'%, wind '+c.wind_speed_10m+' km/h, WMO weather code '+c.weather_code+', today high '+d.temperature_2m_max[0]+'C, low '+d.temperature_2m_min[0]+'C, rain chance '+d.precipitation_probability_max[0]+'%.';
+  return 'LIVE WEATHER for '+p.name+(p.admin1?', '+p.admin1:'')+': now '+c.temperature_2m+'C (feels like '+c.apparent_temperature+'C), humidity '+c.relative_humidity_2m+'%, wind '+c.wind_speed_10m+' km/h, WMO weather code '+c.weather_code+', today high '+d.temperature_2m_max[0]+'C, low '+d.temperature_2m_min[0]+'C, rain chance '+d.precipitation_probability_max[0]+'%.';
 }
 async function getNews(){
   const feed='https://news.google.com/rss?hl=en-IN&gl=IN&ceid=IN:en';
@@ -128,9 +138,8 @@ async function getNews(){
 async function loadWx(){
   try{
     const city=store.get('zc'); if(!city) return;
-    const g=await (await fetch('https://geocoding-api.open-meteo.com/v1/search?count=1&name='+encodeURIComponent(city))).json();
-    if(!g.results||!g.results.length) return;
-    const p=g.results[0];
+    const p=await geo(city);
+    if(!p) return;
     const w=await (await fetch('https://api.open-meteo.com/v1/forecast?latitude='+p.latitude+'&longitude='+p.longitude+'&current=temperature_2m&timezone=auto')).json();
     $('wx').textContent=p.name.toUpperCase()+' '+Math.round(w.current.temperature_2m)+'\u00B0C';
   }catch(e){}
@@ -197,6 +206,7 @@ async function pickModel(key){
 function buildSystem(live){
   const sc=store.get('zs').trim();
   return 'You are ZARVIS, a personal AI assistant in the style of Tony Stark\'s JARVIS: calm, composed, razor-sharp, dryly witty and impeccably polite, with a hint of British understatement. Address the user as "sir" unless they have told you otherwise. This is a spoken conversation: reply in 1-2 short natural sentences, three at most, with no markdown, lists, emojis or stage directions. Be proactive and confident, and occasionally end with a brief question or suggestion. Mirror the language the user speaks. Current time: '+new Date().toString()+'.'
+  +(store.get('zc')?'\nThe user lives in '+store.get('zc')+'. Use that as their home location for anything local.':'')
   +(facts.length?'\nThings you remember about the user (use them naturally when relevant, never list them out): '+facts.join('; ')+'.':'')
   +'\nYou can control the user\'s phone by putting action tags at the very END of your reply, after your spoken words. Use a tag only when the user clearly asks for that action. Tags: [[tel:NUMBER]] call; [[sms:NUMBER|message]] text; [[wa:NUMBER|message]] WhatsApp; [[maps:place]] show on map; [[nav:place]] directions; [[search:query]] web search; [[youtube:query]] YouTube search; [[open:APP]] open an app (youtube, spotify, instagram, whatsapp, telegram, maps, music, messages, phone, facetime, mail, notes, calendar, reminders, photos, files); [[timer:MINUTES]] countdown timer that works while this page stays open; [[note:text]] save a note to remember. [[shortcut:NAME]] runs one of the user\'s iPhone Shortcuts; the only ones that exist are: '+(sc||'none')+'. Never invent phone numbers: if you do not know one, ask for it. When you use a tag, say in a few words what you are doing, for example "Calling now, sir." The user taps a button to confirm. If asked for something no tag can do, say so briefly and offer the nearest option.'
   +(live?'\nLive data you can use for this answer (summarise it naturally, do not read it out like a report): '+live:'');
